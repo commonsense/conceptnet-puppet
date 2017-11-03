@@ -54,32 +54,12 @@ postgresql::server::db { 'conceptnet5':
   password  => undef,
 }
 
-postgresql::server::pg_hba_rule { 'allow db access from the command line':
+postgresql::server::pg_hba_rule { 'allow db access over a local socket':
   type        => 'local',
   database    => 'conceptnet5',
   user        => 'all',
   auth_method => 'trust'
 }
-
-postgresql::server::pg_hba_rule { 'allow db access over IPv4 localhost':
-  type        => 'host',
-  database    => 'conceptnet5',
-  address     => '127.0.0.1/32',
-  user        => 'all',
-  auth_method => 'trust',
-  order       => '090',
-}
-
-postgresql::server::pg_hba_rule { 'allow db access over IPv6 localhost':
-  type        => 'host',
-  database    => 'conceptnet5',
-  address     => '::1/128',
-  user        => 'all',
-  auth_method => 'trust',
-  order       => '091',
-}
-
-
 
 
 # Python and ConceptNet setup

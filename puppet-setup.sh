@@ -7,4 +7,4 @@
 sudo apt install puppet-common puppet-module-puppetlabs-postgresql puppet-module-puppetlabs-vcsrepo
 
 # Get the Puppet module that lets us work with Python and Pip.
-puppet module install stankevich-python
+sudo puppet module install stankevich-python
