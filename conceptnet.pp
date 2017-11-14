@@ -1,29 +1,22 @@
 # System package dependencies
 
+include apt
 class { 'apt':
   update => {
     frequency => 'daily',
   },
 }
 
-package { 'libhdf5-dev':
-  ensure  => 'latest',
-}
+$dependencies = [
+  'build-essential',
+  'libhdf5-dev',
+  'libmecab-dev',
+  'mecab-ipadic-utf8',
+  'wget',
+]
 
-package { 'build-essential':
-  ensure  => 'latest',
-}
-
-package { 'wget':
-  ensure  => 'latest',
-}
-
-package { 'libmecab-dev':
-  ensure  => 'latest',
-}
-
-package { 'mecab-ipadic-utf8':
-  ensure  => 'latest',
+package { $dependencies:
+  ensure  => present,
 }
 
 class { 'postgresql::globals':
@@ -46,8 +39,7 @@ user { 'conceptnet':
 
 class { 'postgresql::server': }
 
-postgresql::server::role { 'conceptnet':
-}
+postgresql::server::role { 'conceptnet': }
 
 postgresql::server::db { 'conceptnet5':
   user      => 'conceptnet',
