@@ -4,7 +4,7 @@ WantedBy=multi-user.target
 [Unit]
 Description=ConceptNet uWSGI processes
 Conflicts=shutdown.target reboot.target halt.target
-After=syslog.target
+After=syslog.target postgresql.service
 
 [Service]
 Restart=always
@@ -13,4 +13,3 @@ Type=notify
 StandardError=syslog
 NotifyAccess=all
 ExecStart=/home/conceptnet/env/bin/uwsgi --ini /home/conceptnet/uwsgi/emperor.ini
-RuntimeDirectory=uwsgi-conceptnet
