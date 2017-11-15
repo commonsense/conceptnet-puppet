@@ -1,4 +1,5 @@
-import 'conceptnet.pp'
+# This configuration effectively extends the base ConceptNet configuration,
+# setting up the Web server that serves the Web site and API.
 
 package { 'nginx':
   ensure  => 'latest',
@@ -24,7 +25,7 @@ file { '/etc/nginx/conf.d/conceptnet.conf':
 
 file { '/home/conceptnet/nginx':
   ensure  => 'directory',
-  require => User['conceptnet'],
+  owner   => 'www-data',
 }
 
 # Remove Debian's "presumptuous" default Nginx configuration
@@ -43,33 +44,56 @@ python::pip { 'uwsgi':
 
 file { '/home/conceptnet/uwsgi':
   ensure  => 'directory',
+  owner   => 'conceptnet',
   require => User['conceptnet'],
 }
 
 file { '/home/conceptnet/uwsgi/run':
   ensure  => 'directory',
+  owner   => 'www-data',
 }
 
 file { '/home/conceptnet/uwsgi/apps':
   ensure  => 'directory',
+  owner   => 'conceptnet',
+  require => User['conceptnet'],
 }
 
 file { '/home/conceptnet/uwsgi/emperor.ini':
   ensure  => 'present',
   source  => 'puppet:///modules/conceptnet/uwsgi/emperor.ini',
+  owner   => 'conceptnet',
+  require => User['conceptnet'],
 }
 
 file { '/home/conceptnet/uwsgi/apps/conceptnet-web.ini':
   ensure  => 'present',
-  source  => 'puppet:///modules/conceptnet/uwsgi/conceptnet-web.ini',
+  source  => 'puppet:///modules/conceptnet/uwsgi/apps/conceptnet-web.ini',
+  owner   => 'conceptnet',
+  require => User['conceptnet'],
 }
 
 file { '/home/conceptnet/uwsgi/apps/conceptnet-api.ini':
   ensure  => 'present',
-  source  => 'puppet:///modules/conceptnet/uwsgi/conceptnet-api.ini',
+  source  => 'puppet:///modules/conceptnet/uwsgi/apps/conceptnet-api.ini',
+  owner   => 'conceptnet',
+  require => User['conceptnet'],
 }
 
-file { '/lib/systemd/system/conceptnet.service':
+file { '/etc/systemd/system/conceptnet.service':
   ensure  => 'present',
   source  => 'puppet:///modules/conceptnet/systemd/conceptnet.service',
+}
+
+exec { 'systemctl restart nginx':
+  path        => ['/bin'],
+  refreshonly => true,
+  subscribe   => File['/etc/nginx/conf.d/conceptnet.conf'],
+  require     => File['/etc/nginx/sites-enabled/default'],
+}
+
+exec { 'systemctl restart conceptnet':
+  path        => ['/bin'],
+  refreshonly => true,
+  subscribe   => File['/etc/systemd/system/conceptnet.service'],
 }

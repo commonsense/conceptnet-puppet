@@ -1,6 +1,5 @@
 # System package dependencies
 
-include apt
 class { 'apt':
   update => {
     frequency => 'daily',
