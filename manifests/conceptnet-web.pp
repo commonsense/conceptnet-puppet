@@ -80,6 +80,9 @@ file { '/home/conceptnet/uwsgi/apps/conceptnet-api.ini':
   require => User['conceptnet'],
 }
 
+
+# Manage systemd units
+
 file { '/etc/systemd/system/conceptnet.service':
   ensure  => 'present',
   source  => 'puppet:///modules/conceptnet/systemd/conceptnet.service',
@@ -96,4 +99,11 @@ exec { 'systemctl restart conceptnet':
   path        => ['/bin'],
   refreshonly => true,
   subscribe   => File['/etc/systemd/system/conceptnet.service'],
+}
+
+
+# Configure the system's hostname
+host { $hostname:
+  ip => '127.0.1.1',
+  host_aliases => [ 'api.conceptnet.localhost', 'www.conceptnet.localhost' ],
 }
