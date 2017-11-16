@@ -84,6 +84,7 @@ python::pip { 'conceptnet':
   ensure     => 'latest',
   virtualenv => '/home/conceptnet/env',
   pkgname    => '/home/conceptnet/conceptnet5[vectors]',
+  owner      => 'conceptnet',
   egg        => 'ConceptNet',
   install_args => '-e',
   require    => Vcsrepo['/home/conceptnet/conceptnet5'],

@@ -10,6 +10,7 @@ python::pip { 'conceptnet_web':
   ensure     => 'latest',
   virtualenv => '/home/conceptnet/env',
   pkgname    => '/home/conceptnet/conceptnet5/web',
+  owner      => 'conceptnet',
   egg        => 'conceptnet_web',
   install_args => '-e',
   require    => [ Vcsrepo['/home/conceptnet/conceptnet5'], Python::Pip['conceptnet'] ],
