@@ -26,7 +26,8 @@ file { '/etc/nginx/conf.d/conceptnet.conf':
 
 file { '/home/conceptnet/nginx':
   ensure  => 'directory',
-  owner   => 'www-data',
+  owner   => 'conceptnet',
+  require => User['conceptnet'],
 }
 
 # Remove Debian's "presumptuous" default Nginx configuration
@@ -51,7 +52,8 @@ file { '/home/conceptnet/uwsgi':
 
 file { '/home/conceptnet/uwsgi/run':
   ensure  => 'directory',
-  owner   => 'www-data',
+  owner   => 'conceptnet',
+  require => User['conceptnet'],
 }
 
 file { '/home/conceptnet/uwsgi/apps':

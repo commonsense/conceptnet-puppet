@@ -30,6 +30,7 @@ class { 'postgresql::globals':
 user { 'conceptnet':
   ensure  => 'present',
   shell   => '/bin/bash',
+  groups  => 'www-data',
   managehome => true,
 }
 
@@ -38,7 +39,9 @@ user { 'conceptnet':
 
 class { 'postgresql::server': }
 
-postgresql::server::role { 'conceptnet': }
+postgresql::server::role { 'conceptnet':
+  superuser => true,
+}
 
 postgresql::server::db { 'conceptnet5':
   user      => 'conceptnet',
@@ -61,6 +64,7 @@ vcsrepo { '/home/conceptnet/conceptnet5':
   source   => 'https://github.com/commonsense/conceptnet5.git',
   revision => 'puppet',
   user     => 'conceptnet',
+  require  => User['conceptnet'],
 }
 
 class { 'python':
@@ -78,6 +82,7 @@ python::virtualenv { '/home/conceptnet/env':
   systempkgs => false,
   venv_dir   => '/home/conceptnet/env',
   owner      => 'conceptnet',
+  require  => User['conceptnet'],
 }
 
 python::pip { 'conceptnet':
@@ -104,5 +109,6 @@ python::pip { 'ipython':
 file { '/home/conceptnet/.bashrc':
   ensure  => 'present',
   content => 'source /home/conceptnet/env/bin/activate',
+  require  => User['conceptnet'],
 }
 
