@@ -26,14 +26,7 @@ class { 'postgresql::globals':
 
 # Configure unattended-upgrades to upgrade packages every day
 
-class { 'apt::unattended_upgrades':
-  blacklist     => [],
-  update        => '1',
-  download      => '1',
-  upgrade       => '1',
-  autoclean     => '7',
-}
-
+include unattended_upgrades
 
 # Create the 'conceptnet' user who will own things
 
