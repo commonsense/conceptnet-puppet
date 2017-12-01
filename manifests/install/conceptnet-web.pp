@@ -95,13 +95,17 @@ exec { 'systemctl restart nginx':
   path        => ['/bin'],
   refreshonly => true,
   subscribe   => File['/etc/nginx/conf.d/conceptnet.conf'],
-  require     => File['/etc/nginx/sites-enabled/default'],
+  require     => [Package['nginx'], File['/etc/nginx/sites-enabled/default'], File['/etc/nginx/conf.d/conceptnet.conf']]
 }
 
 exec { 'systemctl restart conceptnet':
   path        => ['/bin'],
   refreshonly => true,
   subscribe   => File['/etc/systemd/system/conceptnet.service'],
+  require     => [File['/etc/systemd/system/conceptnet.service'],
+                  File['/home/conceptnet/uwsgi/apps/conceptnet-web.ini'],
+                  File['/home/conceptnet/uwsgi/apps/conceptnet-api.ini'],
+                  Python::Pip['uwsgi']]
 }
 
 
