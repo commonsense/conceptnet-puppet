@@ -89,6 +89,7 @@ file { '/home/conceptnet/uwsgi/apps/conceptnet-api.ini':
 file { '/etc/systemd/system/conceptnet.service':
   ensure  => 'present',
   source  => 'puppet:///modules/conceptnet/systemd/conceptnet.service',
+  owner   => 'root',
 }
 
 exec { 'systemctl restart nginx':
@@ -98,6 +99,13 @@ exec { 'systemctl restart nginx':
   require     => [Package['nginx'], File['/etc/nginx/sites-enabled/default'], File['/etc/nginx/conf.d/conceptnet.conf']]
 }
 
+exec { 'systemctl enable conceptnet':
+  path        => ['/bin'],
+  refreshonly => true,
+  subscribe   => File['/etc/systemd/system/conceptnet.service'],
+  require     => File['/etc/systemd/system/conceptnet.service'],
+}
+
 exec { 'systemctl restart conceptnet':
   path        => ['/bin'],
   refreshonly => true,
@@ -105,7 +113,7 @@ exec { 'systemctl restart conceptnet':
   require     => [File['/etc/systemd/system/conceptnet.service'],
                   File['/home/conceptnet/uwsgi/apps/conceptnet-web.ini'],
                   File['/home/conceptnet/uwsgi/apps/conceptnet-api.ini'],
-                  Python::Pip['uwsgi']]
+                  Python::Pip['uwsgi']],
 }
 
 
