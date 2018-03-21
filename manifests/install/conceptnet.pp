@@ -65,7 +65,7 @@ vcsrepo { '/home/conceptnet/conceptnet5':
   ensure   => 'present',
   provider => 'git',
   source   => 'https://github.com/commonsense/conceptnet5.git',
-  revision => 'puppet',
+  revision => 'master',
   user     => 'conceptnet',
   require  => User['conceptnet'],
 }
