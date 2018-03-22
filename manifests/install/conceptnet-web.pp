@@ -32,7 +32,7 @@ file { '/home/conceptnet/nginx':
 
 file { '/home/conceptnet/nginx/cache':
   ensure  => 'directory',
-  owner   => 'conceptnet',
+  owner   => 'www-data',
   require => File['/home/conceptnet/nginx'],
 }
 
