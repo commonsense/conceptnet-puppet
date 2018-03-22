@@ -119,7 +119,7 @@ exec { 'systemctl restart conceptnet':
   require     => [File['/etc/systemd/system/conceptnet.service'],
                   File['/home/conceptnet/uwsgi/apps/conceptnet-web.ini'],
                   File['/home/conceptnet/uwsgi/apps/conceptnet-api.ini'],
-                  Python::Pip['conceptnet']],
+                  Python::Pip['conceptnet_web'],
                   Python::Pip['uwsgi']],
 }
 
