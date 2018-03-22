@@ -30,6 +30,12 @@ file { '/home/conceptnet/nginx':
   require => User['conceptnet'],
 }
 
+file { '/home/conceptnet/nginx/cache':
+  ensure  => 'directory',
+  owner   => 'conceptnet',
+  require => File['/home/conceptnet/nginx'],
+}
+
 # Remove Debian's "presumptuous" default Nginx configuration
 file { '/etc/nginx/sites-enabled/default':
   ensure  => 'absent',
