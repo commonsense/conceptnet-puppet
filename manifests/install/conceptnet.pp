@@ -33,10 +33,16 @@ include unattended_upgrades
 user { 'conceptnet':
   ensure  => 'present',
   shell   => '/bin/bash',
-  groups  => 'www-data',
+  groups  => ['www-data'],
   managehome => true,
 }
 
+user { 'ubuntu':
+  ensure  => 'present',
+  shell   => '/bin/bash',
+  groups  => ['www-data'],
+  managehome => false,
+}
 
 # PostgreSQL setup
 
@@ -65,9 +71,17 @@ vcsrepo { '/home/conceptnet/conceptnet5':
   ensure   => 'present',
   provider => 'git',
   source   => 'https://github.com/commonsense/conceptnet5.git',
-  revision => 'master',
+  revision => 'json-ld-upgrade',
   user     => 'conceptnet',
   require  => User['conceptnet'],
+}
+
+file { '/home/conceptnet/conceptnet5/data':
+  ensure  => 'directory',
+  owner   => 'conceptnet',
+  group   => 'www-data',
+  mode    => 'ug+rw',
+  require => Vcsrepo['/home/conceptnet/conceptnet5'],
 }
 
 class { 'python':
