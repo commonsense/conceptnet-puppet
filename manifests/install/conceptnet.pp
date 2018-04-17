@@ -68,7 +68,7 @@ postgresql::server::pg_hba_rule { 'allow db access over a local socket':
 # Python and ConceptNet setup
 
 vcsrepo { '/home/conceptnet/conceptnet5':
-  ensure   => 'present',
+  ensure   => 'latest',
   provider => 'git',
   source   => 'https://github.com/commonsense/conceptnet5.git',
   revision => 'version5.6',
