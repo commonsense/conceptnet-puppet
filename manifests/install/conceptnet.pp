@@ -71,7 +71,7 @@ vcsrepo { '/home/conceptnet/conceptnet5':
   ensure   => 'latest',
   provider => 'git',
   source   => 'https://github.com/commonsense/conceptnet5.git',
-  revision => 'version5.6',
+  revision => 'version5.7',
   user     => 'conceptnet',
   require  => User['conceptnet'],
 }
